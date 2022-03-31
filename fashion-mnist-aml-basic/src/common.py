@@ -1,7 +1,7 @@
 """Constants and common code."""
 
-DATA_DIR = "fashion-mnist-pytorch/fashion-mnist-aml-basic/data"
-MODEL_DIR = "fashion-mnist-pytorch/fashion-mnist-aml-basic/trained_model"
+DATA_DIR = "fashion-mnist-aml-basic/data"
+MODEL_DIR = "fashion-mnist-aml-basic/trained_model"
 
 LABELS_MAP = {
     0: "T-Shirt",

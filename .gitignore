@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 data
-trained-model
+trained_model
