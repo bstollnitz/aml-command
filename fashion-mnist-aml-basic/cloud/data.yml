@@ -1,4 +1,4 @@
 $schema: https://azuremlschemas.azureedge.net/latest/dataset.schema.json
-name: dataset-fashion-mnist
+name: data-fashion-mnist
 description: Fashion MNIST Dataset.
-local_path: ../data
+path: ../data/

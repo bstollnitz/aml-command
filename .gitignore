@@ -128,5 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-data
-trained_model
+data/
+model/
+trained_model/
+mlruns/
