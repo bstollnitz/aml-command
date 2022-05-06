@@ -29,23 +29,29 @@ Get familiar with the code in the experiment.ipynb notebook, and run it. The not
 * Trains a model with that data, and saves the trained model in the "model_from_notebook" folder.
 * Tests the trained model with test data.
 * Makes a prediction using the test image.
-* Creates json and csv versions of the test image, which we'll use to make predictions with mlflow and Azure ML. (These files are already checked in, but I included the code here so you can see how they were generated.)
+* Creates json and csv versions of the test image, which we'll use to make predictions with mlflow and Azure ML. (These files are checked in with the project, but I included the code here so you can see how they were generated.)
  
 
 ## Train and predict locally
 
-* Run train.py by pressing F5.
+* Run train.py by pressing F5. This saves the trained model as an MLflow artifact.
 * Analyze the metrics logged in the "mlruns" directory with the following command:
 
 ```
 mlflow ui
 ```
 
-* Make a local prediction using the trained mlflow model. You can use either csv or json files:
+* Set the model_uri environment variable to the model you want to use in prediction. You can use the model created in the latest train run, which train.py prints. Or you can choose one from the mlflow UI. For example:
 
 ```
-mlflow models predict --model-uri "trained_model_output" --input-path "test_image/predict_image.csv" --content-type csv
-mlflow models predict --model-uri "trained_model_output" --input-path "test_image/predict_image.json" --content-type json
+model_uri=runs:/4dff763fdab946eba83f469618544604/trained_model_artifact
+```
+
+* Make a local prediction using the trained MLflow model. You can use either csv or json files:
+
+```
+mlflow models predict --model-uri $model_uri --input-path "aml-train-deploy/test_image/predict_image.csv" --content-type csv
+mlflow models predict --model-uri $model_uri --input-path "aml-train-deploy/test_image/predict_image.json" --content-type json
 ```
 
 
@@ -54,20 +60,22 @@ mlflow models predict --model-uri "trained_model_output" --input-path "test_imag
 Create the compute cluster.
 
 ```
-az ml compute create -f cloud/cluster-cpu.yml 
+az ml compute create -f aml-train-deploy/cloud/cluster-cpu.yml 
 ```
 
 Create the dataset.
 
 ```
-az ml data create -f cloud/data.yml 
+az ml data create -f aml-train-deploy/cloud/data.yml 
 ```
 
-Run the training job. Go to the Azure ML Studio and wait until the Experiment completes.
+Run the training job.
 
 ```
-run_id=$(az ml job create -f cloud/job.yml --query name -o tsv)
+run_id=$(az ml job create -f aml-train-deploy/cloud/job.yml --query name -o tsv)
 ```
+
+Go to the Azure ML Studio and wait until the Experiment completes.
 
 You don't need to download the trained model, but here's how you would do it if you wanted to:
 
@@ -75,21 +83,21 @@ You don't need to download the trained model, but here's how you would do it if 
 az ml job download --name $run_id
 ```
 
-Create the Azure ML model from the trained model saved as an artifact by the training code.
+Create the Azure ML model from the trained model saved as an artifact.
 
 ```
-az ml model create --name model-aml --version 1 --path runs:/$run_id/trained_model_artifact --type mlflow_model
+az ml model create --name model-aml-train-deploy --version 1 --path runs:/$run_id/trained_model_artifact --type mlflow_model
 ```
 
 Create the endpoint.
 
 ```
-az ml online-endpoint create -f cloud/endpoint.yml
-az ml online-deployment create -f cloud/deployment.yml --all-traffic
+az ml online-endpoint create -f aml-train-deploy/cloud/endpoint.yml
+az ml online-deployment create -f aml-train-deploy/cloud/deployment.yml --all-traffic
 ```
 
 Invoke the endpoint.
 
 ```
-az ml online-endpoint invoke --name endpoint-aml --request-file test_image/predict_image_azureml.json
+az ml online-endpoint invoke --name endpoint-aml-train-deploy --request-file aml-train-deploy/test_image/predict_image_azureml.json
 ```

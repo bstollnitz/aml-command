@@ -2,9 +2,6 @@
 
 import argparse
 import logging
-import shutil
-import tempfile
-import uuid
 from pathlib import Path
 from typing import Tuple
 
@@ -18,7 +15,7 @@ from torchvision.transforms import ToTensor
 from neural_network import NeuralNetwork
 from utils_train_nn import evaluate, fit
 
-DATA_DIR = "fashion-mnist-aml-basic/data"
+DATA_DIR = "aml-train-deploy/data"
 
 LABELS_MAP = {
     0: "T-Shirt",
@@ -61,21 +58,18 @@ def save_model(model: nn.Module) -> None:
     """
     Saves the trained model.
     """
-    code_paths = ["neural_network.py", "utils_train_nn.py"]
-    src_dir = Path(__file__).parent
-    full_code_paths = [
-        Path(src_dir, code_path).as_posix() for code_path in code_paths
+    code_files = ["neural_network.py", "utils_train_nn.py"]
+    code_paths = [
+        Path(Path(__file__).parent, code_file) for code_file in code_files
     ]
 
-    temp_path = Path(tempfile.gettempdir(), str(uuid.uuid4()))
-    temp_path /= "trained_model_artifact"
+    # Logs the model as an artifact.
+    model_info = mlflow.pytorch.log_model(
+        pytorch_model=model,
+        artifact_path="trained_model_artifact",
+        code_paths=code_paths)
 
-    logging.info("Saving model to %s", temp_path)
-    mlflow.pytorch.save_model(pytorch_model=model,
-                              path=temp_path,
-                              code_paths=full_code_paths)
-
-    mlflow.log_artifact(str(temp_path))
+    logging.info("model_uri=%s", model_info.model_uri)
 
 
 def train(data_dir: str, device: str) -> None:
