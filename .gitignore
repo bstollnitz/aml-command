@@ -132,3 +132,5 @@ data/
 model/
 trained_model/
 mlruns/
+named-outputs/
+artifacts/

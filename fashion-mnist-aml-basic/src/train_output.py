@@ -19,7 +19,7 @@ from neural_network import NeuralNetwork
 from utils_train_nn import evaluate, fit
 
 DATA_DIR = "fashion-mnist-aml-basic/data"
-MLFLOW_MODEL_DIR = "fashion-mnist-aml-basic/trained_model/"
+MLFLOW_MODEL_DIR = "fashion-mnist-aml-basic/trained_model_output/"
 
 LABELS_MAP = {
     0: "T-Shirt",
@@ -62,22 +62,30 @@ def save_model(model_dir, model: nn.Module) -> None:
     """
     Saves the trained model.
     """
-    path = Path(model_dir)
-    shutil.rmtree(path, ignore_errors=True)
-    temp_path = tempfile.gettempdir() + "/" + str(uuid.uuid4())
+    use_artifact = False
+
     code_paths = ["neural_network.py", "utils_train_nn.py"]
     src_dir = Path(__file__).parent
     full_code_paths = [
         Path(src_dir, code_path).as_posix() for code_path in code_paths
     ]
 
+    temp_path = Path(tempfile.gettempdir(), str(uuid.uuid4()))
+    if use_artifact:
+        temp_path /= "trained_model_artifact"
+
     logging.info("Saving model to %s", temp_path)
     mlflow.pytorch.save_model(pytorch_model=model,
                               path=temp_path,
                               code_paths=full_code_paths)
-    mlflow.log_artifact(temp_path, "trained_model")
 
-    shutil.copytree(temp_path, path, dirs_exist_ok=True)
+    if use_artifact:
+        mlflow.log_artifact(str(temp_path))
+    else:
+        path = Path(model_dir)
+        shutil.rmtree(path, ignore_errors=True)
+        logging.info("Copying model to %s", path)
+        shutil.copytree(temp_path, path, dirs_exist_ok=True)
 
 
 def train(data_dir: str, model_dir: str, device: str) -> None:
@@ -86,7 +94,7 @@ def train(data_dir: str, model_dir: str, device: str) -> None:
     """
     learning_rate = 0.1
     batch_size = 64
-    epochs = 5
+    epochs = 1
 
     (train_dataloader,
      val_dataloader) = load_train_val_data(data_dir, batch_size, 0.8)
