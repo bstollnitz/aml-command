@@ -24,9 +24,12 @@ conda activate aml-train-deploy
 
 ## Run the notebook locally
 
-Get familiar with the code in the experiment.ipynb notebook, and run it. This accomplishes a couple of useful tasks:
+Get familiar with the code in the experiment.ipynb notebook, and run it. The notebook accomplishes the following:
 * Downloads the data into the "data" folder.
-* Creates json and csv versions of the test image, which we'll use to make predictions.
+* Trains a model with that data, and saves the trained model in the "model_from_notebook" folder.
+* Tests the trained model with test data.
+* Makes a prediction using the test image.
+* Creates json and csv versions of the test image, which we'll use to make predictions with mlflow and Azure ML. (These files are already checked in, but I included the code here so you can see how they were generated.)
  
 
 ## Train and predict locally

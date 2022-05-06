@@ -129,8 +129,7 @@ dmypy.json
 .pyre/
 
 data/
-model/
-trained_model/
+model_from_notebook/
 mlruns/
 named-outputs/
 artifacts/
