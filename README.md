@@ -57,22 +57,26 @@ mlflow models predict --model-uri $model_uri --input-path "aml-train-deploy/test
 
 ## Train and deploy in the cloud
 
+```
+cd aml-train-deploy
+```
+
 Create the compute cluster.
 
 ```
-az ml compute create -f aml-train-deploy/cloud/cluster-cpu.yml 
+az ml compute create -f cloud/cluster-cpu.yml 
 ```
 
 Create the dataset.
 
 ```
-az ml data create -f aml-train-deploy/cloud/data.yml 
+az ml data create -f cloud/data.yml 
 ```
 
 Run the training job.
 
 ```
-run_id=$(az ml job create -f aml-train-deploy/cloud/job.yml --query name -o tsv)
+run_id=$(az ml job create -f cloud/job.yml --query name -o tsv)
 ```
 
 Go to the Azure ML Studio and wait until the Experiment completes.
@@ -92,12 +96,12 @@ az ml model create --name model-aml-train-deploy --version 1 --path runs:/$run_i
 Create the endpoint.
 
 ```
-az ml online-endpoint create -f aml-train-deploy/cloud/endpoint.yml
-az ml online-deployment create -f aml-train-deploy/cloud/deployment.yml --all-traffic
+az ml online-endpoint create -f cloud/endpoint.yml
+az ml online-deployment create -f cloud/deployment.yml --all-traffic
 ```
 
 Invoke the endpoint.
 
 ```
-az ml online-endpoint invoke --name endpoint-aml-train-deploy --request-file aml-train-deploy/test_image/predict_image_azureml.json
+az ml online-endpoint invoke --name endpoint-aml-train-deploy --request-file test_image/predict_image_azureml.json
 ```
