@@ -15,7 +15,7 @@ from torchvision.transforms import ToTensor
 from neural_network import NeuralNetwork
 from utils_train_nn import evaluate, fit
 
-DATA_DIR = "aml-train-deploy/data"
+DATA_DIR = "aml-command/data"
 
 LABELS_MAP = {
     0: "T-Shirt",
@@ -78,7 +78,7 @@ def train(data_dir: str, device: str) -> None:
     """
     learning_rate = 0.1
     batch_size = 64
-    epochs = 1
+    epochs = 5
 
     (train_dataloader,
      val_dataloader) = load_train_val_data(data_dir, batch_size, 0.8)
