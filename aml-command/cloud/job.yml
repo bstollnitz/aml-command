@@ -6,7 +6,7 @@ compute: azureml:cluster-cpu
 
 inputs:
   fashion_mnist:
-    path: azureml:data-fashion-mnist:1
+    path: azureml:data-fashion-mnist@latest
 
 code: ../src
 environment:
