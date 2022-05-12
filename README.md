@@ -103,5 +103,5 @@ az ml online-deployment create -f cloud/deployment.yml --all-traffic
 Invoke the endpoint.
 
 ```
-az ml online-endpoint invoke --name endpoint-aml-train-deploy --request-file test_image/predict_image_azureml.json
+az ml online-endpoint invoke --name endpoint-command --request-file test_image/predict_image_azureml.json
 ```
