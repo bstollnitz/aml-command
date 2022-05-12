@@ -110,7 +110,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_dir", dest="data_dir", default=DATA_DIR)
     args = parser.parse_args()
-    logging.info("input parameters: %s", args)
+    logging.info("input parameters: %s", vars(args))
 
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
