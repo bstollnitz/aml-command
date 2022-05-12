@@ -90,7 +90,7 @@ az ml job download --name $run_id
 Create the Azure ML model from the trained model saved as an artifact.
 
 ```
-az ml model create --name model-aml-train-deploy --version 1 --path runs:/$run_id/trained_model_artifact --type mlflow_model
+az ml model create --name model-command --version 1 --path runs:/$run_id/trained_model_artifact --type mlflow_model
 ```
 
 Create the endpoint.
