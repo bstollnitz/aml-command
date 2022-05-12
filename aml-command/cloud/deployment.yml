@@ -1,6 +1,6 @@
 $schema: https://azuremlschemas.azureedge.net/latest/managedOnlineDeployment.schema.json
 name: blue
-endpoint_name: endpoint-aml-train-deploy
-model: azureml:model-aml-train-deploy:1
+endpoint_name: endpoint-command
+model: azureml:model-command:1
 instance_type: Standard_DS3_v2
 instance_count: 1
