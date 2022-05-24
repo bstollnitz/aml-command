@@ -16,4 +16,4 @@ dependencies:
   - pip:
       - azure-ml==0.0.1
       - azureml-mlflow==1.41.0
-      - azureml.core
+      - azureml-core==1.41.0.post3

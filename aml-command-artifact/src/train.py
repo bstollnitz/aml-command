@@ -15,7 +15,7 @@ from torchvision.transforms import ToTensor
 from neural_network import NeuralNetwork
 from utils_train_nn import evaluate, fit
 
-DATA_DIR = "aml-command/data"
+DATA_DIR = "aml-command-artifact/data"
 
 LABELS_MAP = {
     0: "T-Shirt",
