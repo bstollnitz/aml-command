@@ -50,8 +50,8 @@ model_uri=runs:/4dff763fdab946eba83f469618544604/trained_model_artifact
 * Make a local prediction using the trained MLflow model. You can use either csv or json files:
 
 ```
-mlflow models predict --model-uri $model_uri --input-path "aml-train-deploy/test_image/predict_image.csv" --content-type csv
-mlflow models predict --model-uri $model_uri --input-path "aml-train-deploy/test_image/predict_image.json" --content-type json
+mlflow models predict --model-uri $model_uri --input-path "aml-command-artifact/test_image/predict_image.csv" --content-type csv
+mlflow models predict --model-uri $model_uri --input-path "aml-command-artifact/test_image/predict_image.json" --content-type json
 ```
 
 
@@ -64,7 +64,7 @@ cd aml-command-artifact
 Create the compute cluster.
 
 ```
-az ml compute create -f cloud/cluster-cpu.yml 
+az ml compute create -f cloud/cluster-gpu.yml 
 ```
 
 Create the dataset.
@@ -79,7 +79,7 @@ Run the training job.
 run_id=$(az ml job create -f cloud/job.yml --query name -o tsv)
 ```
 
-Go to the Azure ML Studio and wait until the Experiment completes.
+Go to the Azure ML Studio and wait until the job completes.
 
 You don't need to download the trained model, but here's how you would do it if you wanted to:
 
