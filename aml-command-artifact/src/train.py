@@ -64,10 +64,9 @@ def save_model(model: nn.Module) -> None:
     ]
 
     # Logs the model as an artifact.
-    model_info = mlflow.pytorch.log_model(
-        pytorch_model=model,
-        artifact_path="trained_model_artifact",
-        code_paths=code_paths)
+    model_info = mlflow.pytorch.log_model(pytorch_model=model,
+                                          artifact_path="model_artifact",
+                                          code_paths=code_paths)
 
     logging.info("model_uri=%s", model_info.model_uri)
 

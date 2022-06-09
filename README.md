@@ -49,7 +49,7 @@ mlflow ui
 * Set the model_uri environment variable to the model you want to use in prediction. You can use the model created in the latest train run, which train.py prints. Or you can choose one from the mlflow UI. For example:
 
 ```
-model_uri=runs:/4dff763fdab946eba83f469618544604/trained_model_artifact
+model_uri=runs:/4dff763fdab946eba83f469618544604/model_artifact
 ```
 
 * Make a local prediction using the trained MLflow model. You can use either csv or json files:
@@ -95,7 +95,7 @@ az ml job download --name $run_id
 Create the Azure ML model from the trained model saved as an artifact.
 
 ```
-az ml model create --name model-command-artifact --version 1 --path runs:/$run_id/trained_model_artifact --type mlflow_model
+az ml model create --name model-command-artifact --version 1 --path runs:/$run_id/model_artifact --type mlflow_model
 ```
 
 Create the endpoint.
