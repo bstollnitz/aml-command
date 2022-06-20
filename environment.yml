@@ -1,4 +1,4 @@
-name: aml-command-artifact
+name: aml_command_artifact
 channels:
   - anaconda
   - pytorch

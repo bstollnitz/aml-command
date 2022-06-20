@@ -33,7 +33,7 @@ conda env create -f environment.yml
 Activate conda environment:
 
 ```
-conda activate aml-command-artifact
+conda activate aml_command_artifact
 ```
 
 
@@ -55,21 +55,21 @@ model_uri=runs:/4dff763fdab946eba83f469618544604/model_artifact
 * Make a local prediction using the trained MLflow model. You can use either csv or json files:
 
 ```
-mlflow models predict --model-uri $model_uri --input-path "aml-command-artifact/test-data/images.csv" --content-type csv
-mlflow models predict --model-uri $model_uri --input-path "aml-command-artifact/test-data/images.json" --content-type json
+mlflow models predict --model-uri $model_uri --input-path "aml_command_artifact/test_data/images.csv" --content-type csv
+mlflow models predict --model-uri $model_uri --input-path "aml_command_artifact/test_data/images.json" --content-type json
 ```
 
 
 ## Train and deploy in the cloud
 
 ```
-cd aml-command-artifact
+cd aml_command_artifact
 ```
 
 Create the compute cluster.
 
 ```
-az ml compute create -f cloud/cluster-gpu.yml 
+az ml compute create -f cloud/cluster-cpu.yml 
 ```
 
 Create the dataset.
