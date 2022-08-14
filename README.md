@@ -109,3 +109,9 @@ Invoke the endpoint.
 ```
 az ml online-endpoint invoke --name endpoint-command-artifact --request-file test_data/images_azureml.json
 ```
+
+When you're done, delete the endpoint to avoid getting charged.
+
+```
+az ml online-endpoint delete --name endpoint-command-artifact -y
+```

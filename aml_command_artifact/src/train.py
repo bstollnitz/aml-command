@@ -6,7 +6,10 @@ from pathlib import Path
 from typing import Tuple
 
 import mlflow
+import numpy as np
 import torch
+from mlflow.models.signature import ModelSignature
+from mlflow.types.schema import ColSpec, Schema, TensorSpec
 from torch import nn
 from torch.utils.data import DataLoader, random_split
 from torchvision import datasets
@@ -45,15 +48,21 @@ def save_model(model: nn.Module) -> None:
     """
     Saves the trained model.
     """
+    input_schema = Schema(
+        [ColSpec(type="double", name=f"col_{i}") for i in range(784)])
+    output_schema = Schema([TensorSpec(np.dtype(np.float32), (-1, 10))])
+    signature = ModelSignature(inputs=input_schema, outputs=output_schema)
+
     code_files = ["neural_network.py", "utils_train_nn.py"]
-    code_paths = [
+    full_code_paths = [
         Path(Path(__file__).parent, code_file) for code_file in code_files
     ]
 
     # Logs the model as an artifact.
     model_info = mlflow.pytorch.log_model(pytorch_model=model,
                                           artifact_path="model_artifact",
-                                          code_paths=code_paths)
+                                          code_paths=full_code_paths,
+                                          signature=signature)
 
     logging.info("model_uri=%s", model_info.model_uri)
 
